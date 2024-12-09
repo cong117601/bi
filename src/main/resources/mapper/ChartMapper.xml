@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yupi.springbootinit.mapper.ChartMapper">
+
+    <resultMap id="BaseResultMap" type="com.yupi.springbootinit.model.entity.Chart">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="goal" column="goal" jdbcType="VARCHAR"/>
+        <result property="chartData" column="chartData" jdbcType="VARCHAR"/>
+        <result property="chartType" column="chartType" jdbcType="VARCHAR"/>
+        <result property="genChart" column="genChart" jdbcType="VARCHAR"/>
+        <result property="genResult" column="genResult" jdbcType="VARCHAR"/>
+        <result property="userId" column="userId" jdbcType="BIGINT"/>
+        <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+        <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,`name`,goal,chartData,
+        chartType,genChart,genResult,userId,
+        createTime,updateTime,isDelete
+    </sql>
+
+    <select id="queryChartData" parameterType="string" resultType="map">
+        ${querySql}
+    </select>
+
+    <update id="createTable">
+        CREATE TABLE ${tableName} (
+        <foreach collection="columns" item="column" separator=",">
+            ${column}
+        </foreach>
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+    </update>
+
+
+    <insert id="insertSaleTable" parameterType="java.util.List">
+        INSERT INTO ${tableName} (sale_no, product_name, customer_name, quantity, unit_price, total_price, sale_date)
+        VALUES
+        <foreach collection="list" item="sale" separator=",">
+            (#{sale.saleNo}, #{sale.productName}, #{sale.customerName},
+            #{sale.quantity}, #{sale.unitPrice}, #{sale.totalPrice}, #{sale.saleDate})
+        </foreach>
+    </insert>
+
+    <insert id="insertPurchaseTable" parameterType="java.util.List">
+        INSERT INTO ${tableName} (purchase_no, product_name, provider_name, quantity, unit_price, total_price, purchase_date)
+        VALUES
+        <foreach collection="list" item="purchase" separator=",">
+            (#{purchase.purchaseNo}, #{purchase.productName}, #{purchase.providerName},
+            #{purchase.quantity}, #{purchase.unitPrice}, #{purchase.totalPrice}, #{purchase.purchaseDate})
+        </foreach>
+    </insert>
+
+</mapper>
